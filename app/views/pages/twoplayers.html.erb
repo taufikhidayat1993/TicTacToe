@@ -1,5 +1,5 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
-<div class="container" style="text-align: center">
+<!--<div class="container" style="text-align: center">
   <h1 id="scoreText" style="text-align: center">
     TicTacToe Two Player
   </h1>
@@ -10,273 +10,60 @@
   <button class='custom-btn btn-5' onClick="subSize()" data-title="Replay Tic Tac Toe">Sub Rows/Cols (Min 2)</button>
   <span style="font-size: 32px;" id="size"></span>
 </div>
-<script>
-  let boardSize = 3;
-  let board = []
-  var canvas;
-  let currentPlayer
-  let players = ['O', 'X']
-  let w;
-  let h;
-  var resultText = document.getElementById("result");
-  var turnText = document.getElementById("turn_player");
-  var sizeText = document.getElementById("size");
-  var canvasOffset = resultText.getBoundingClientRect().bottom;
-  let winner = null
-  let isloop = true
-  
-  function setup() {
-    canvas = createCanvas(500, 500);
-  
-    w = width/boardSize;
-    h = height/boardSize;
-    centerCanvas();
-    initLabels()
-  
-    for(let i=0; i<boardSize; ++i) {
-      let row = [];
-      for(let j=0; j<boardSize; ++j) {
-        row.push('');
-      }
-      board.push(row)
+-->
+<div class="wrapper">
+<form method="post" action="/play">
+<h2>Welcome to the Game!</h2>
+<h2>
+<%= session[:current_player] %>'s turn</h2>
+<table class="tic-tac-toe" cellpadding="0" cellspacing="0">
+  <tbody>
+    <% last_row = 0 %>
+
+    <% (1..9).each do |i| %>
+      <% row = (i.to_f / 3).ceil %>
+
+      <% if row != last_row %>
+        <% last_row = row %>
+        <% if i > 1 %>
+          </tr>
+        <% end %>
+        <tr class="row-<%= row %>">
+      <% end %>
+
+      <% additional_class = '' %>
+
+      <% if [2, 8].include?(i) %>
+        <% additional_class = 'vertical-border' %>
+      <% elsif [4, 6].include?(i) %>
+        <% additional_class = 'horizontal-border' %>
+      <% elsif i == 5 %>
+        <% additional_class = 'center-border' %>
+      <% end %>
+
+      <td class="cell-<%= i %> <%= additional_class %>">
+        <% if session["cell_#{i}"] == 'x' %>
+          X
+        <% elsif session["cell_#{i}"] == 'o' %>
+          O
+        <% else %>
+         <%= session["cell_#{i}"] %>
+          <%= radio_button_tag 'cell', i, false, onclick: 'enableButton()' %>
+        <% end %>
+      </td>
+    <% end %>
+
+    </tr>
+  </tbody>
+</table>
+ <button type="submit" disabled id="play-btn">Play</button>
+
+</form>
+</div>
+<script type="text/javascript">
+    function enableButton() {
+        document.getElementById('play-btn').disabled = false;
     }
-    // boardSize = createSlider(2, 10, 3);
-    currentPlayer = 1
-  }
-  
-  function initLabels() {
-    // newGameBtn = createButton('New Game');
-    // newGameBtn.position(width+30, 150);
-    // newGameBtn.mousePressed(newGame);
-  
-    // sizeInc = createButton('Add Rows/Cols (Max 15)');
-    // sizeInc.position(width+15, 200);
-    // sizeInc.mousePressed(addSize);
-  
-    // sizeDec = createButton('Sub Rows/Cols (Min 2)');
-    // sizeDec.position(width+20, 250);
-    // sizeDec.mousePressed(subSize);
-    currentPlayer = 1
-    turnText.innerHTML = players[currentPlayer] + "'s Turn";
-    resultText.innerHTML = '';
-  }
-  
-  function newGame() {
-    w = width/boardSize;
-    h = height/boardSize;
-  
-    board = []
-  
-    for(let i=0; i<boardSize; ++i) {
-      let row = [];
-      for(let j=0; j<boardSize; ++j) {
-        row.push('');
-      }
-      board.push(row)
-    }
-    currentPlayer = 1
-  
-    winner = null
-    isloop = true
-  
-    resultText.innerHTML = '';
-    sizeText.innerHTML = ('Size: '+boardSize)
-    loop();
-  }
-  
-  function keyReleased() {
-      if (keyCode === 32 || keyCode === 13 || keyCode === 16 || keyCode === 17 || keyCode === 88 || keyCode === 9 || keyCode === 27 || keyCode === 46) {
-          newGame();
-      }
-  }
-  
-  function addSize() {
-    if(boardSize<15) {
-      boardSize++;
-      newGame();
-    }
-  }
-  
-  function subSize() {
-    if(boardSize>2) {
-      boardSize--;
-      newGame();
-    }
-  }
-  
-  // Big function to check if a player won the game. (It is big as we need to generalize)
-  function isWinner() {
-    for(let i=0;i<boardSize;++i) {
-      let temp=board[i][0];
-      if(temp=='') continue;
-      for(let j=1;j<boardSize; ++j) {
-        if(board[i][j] == '') {
-          temp = '';
-          break;
-        }
-        if(board[i][j] != temp) {
-          temp = '';
-          break;
-        }
-      }
-      if(temp != '') {
-        stroke(220, 0, 0);
-        strokeWeight(8);
-        line(w/4, w*(i+0.5), width-(w/4), w*(i+0.5))
-        strokeWeight(4);
-        stroke(0)
-        return temp;
-      }
-    }
-  
-    for(let i=0;i<boardSize;++i) {
-      let temp=board[0][i];
-      if(temp=='') continue;
-      for(let j=1;j<boardSize; ++j) {
-        if(board[j][i] == '') {
-          temp = '';
-          break;
-        }
-        if(board[j][i] != temp) {
-          temp = '';
-          break;
-        }
-      }
-      if(temp != '') {
-        stroke(220, 0, 0);
-        strokeWeight(8);
-        line(w*(i+0.5), w/4, w*(i+0.5), height-(w/4))
-        strokeWeight(4);
-        stroke(0)
-        return temp;
-      }
-    }
-  
-    let temp=board[0][0];
-    if(temp != '') {
-      for(let i=1;i<boardSize;++i) {
-        if(board[i][i] == '') {
-          temp = '';
-          break;
-        }
-        if(board[i][i] != temp) {
-          temp = '';
-          break;
-        }
-      }
-    }
-    if(temp != '') {
-      stroke(220, 0, 0);
-      strokeWeight(8);
-      line(w/4, w/4, width-(w/4), height-(w/4))
-      strokeWeight(4);
-      stroke(0)
-      return temp;
-    }
-  
-    temp=board[0][boardSize-1];
-    if(temp != '') {
-      for(let i=1;i<boardSize;++i) {
-        if(board[i][boardSize-1-i] == '') {
-          temp = '';
-          break;
-        }
-        if(board[i][boardSize-1-i] != temp) {
-          temp = '';
-          break;
-        }
-      }
-    }
-    if(temp != '') {
-      stroke(220, 0, 0);
-      strokeWeight(8);
-      line(width-(w/4), w/4, w/4, height-(w/4))
-      strokeWeight(4);
-      stroke(0)
-      return temp;
-    }
-    for(let i=0; i<boardSize; ++i) {
-      for(let j=0; j<boardSize; ++j) {
-        if(board[i][j] == '') return null;
-      }
-    }
-    return 'TIE';
-  }
-  
-  function mousePressed() {
-    if(mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
-      let j=Math.floor(mouseX/w);
-      let i=Math.floor(mouseY/h);
-      if(board[i][j] != '') return;
-      board[i][j] = players[currentPlayer];
-      currentPlayer = 1-currentPlayer;
-    }
-  }
-  
-  function updateText() {
-    turnText.innerHTML = (players[currentPlayer] + "'s Turn")
-  }
-  
-  function centerCanvas() {
-      var canvasX = (windowWidth - width) / 2;
-      var canvasY = (windowHeight - height) / 2 + canvasOffset;
-      canvas.position(canvasX, canvasY);
-  }
-  
-  function windowResized() {
-      resizeCanvas(windowWidth, windowHeight - canvasOffset * 2);
-      w = width / 3;
-      h = height / 3;
-      centerCanvas();
-      drawGrid();
-  }
-  
-  // The ticks of horizontal and vertical lines form the grid table
-  function drawGrid() {
-      line(w, 0, w, height);
-      line(w * 2, 0, w * 2, height);
-      line(0, h, width, h);
-      line(0, h * 2, width, h * 2);
-  }
-  
-  function draw() {
-    if(isloop) {
-      background(220);
-      drawGrid();
-      updateText();
-      strokeWeight(4);
-      noFill();
-  
-      for(let i=1; i<boardSize; ++i) {
-        line(0, h*i, width, h*i);
-        line(w*i, 0, w*i, height);
-      }
-  
-      for(let i=0; i<boardSize; ++i) {
-        for(let j=0; j<boardSize; ++j) {
-          let x=(w*j)+(w/2);
-          let y=(h*i)+(h/2);
-          let xr = w/4;
-          let yr = h/4;
-          if(board[i][j]=='X') {
-            line(x-xr, y-yr, x+xr, y+yr);
-            line(x+xr, y-yr, x-xr, y+yr);
-          }
-          else if(board[i][j]=='O') {
-            ellipseMode(CENTER);
-            ellipse(x, y, xr*2, yr*2);
-          }
-        }
-      }
-  
-      winner = isWinner();
-      if(winner) {
-        if(winner == 'TIE')
-          resultText.innerHTML = (winner);
-        else
-          resultText.innerHTML = (winner + ' is Winner');
-        isloop = false
-      }
-    }
-  }
 </script>
+
+
