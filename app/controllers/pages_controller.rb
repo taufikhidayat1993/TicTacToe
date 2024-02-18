@@ -41,9 +41,13 @@ class PagesController < ApplicationController
     if !win
       switch_turn
       current_player
-      redirect_to twoplayers_path
+      if session[:plays] == 9
+        session[:current_player] = false
+        redirect_to result_path
+      else
+        redirect_to twoplayers_path
+      end
     else
-      
       mark_win(get_turn)
       reset_board
       redirect_to result_path
@@ -51,6 +55,22 @@ class PagesController < ApplicationController
   end
 
   def registerplayers
+    if params[:player1_name].blank? || params[:player2_name].blank?
+      flash[:error] = "Player 1 dan Player 2 Name Required"
+      redirect_to games_path # ganti dengan path yang sesuai
+      return
+    end
+    if params[:player1_name].blank? 
+      flash[:error] = "Player 1 Name Required"
+      redirect_to games_path # ganti dengan path yang sesuai
+      return
+    end
+
+    if  params[:player2_name].blank?
+      flash[:error] = "Player 2 Name Required"
+      redirect_to games_path # ganti dengan path yang sesuai
+      return
+    end
     session[:player_x_name] = params[:player1_name]
     session[:player_o_name] = params[:player2_name]
     set_turn('x')
