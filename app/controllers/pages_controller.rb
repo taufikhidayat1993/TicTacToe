@@ -13,20 +13,6 @@ class PagesController < ApplicationController
   def games
   end
 
-  def hiscores
-    @users = User.order(win: :desc)
-  end
-
-  def played
-    current_user.win += 1 if params[:win]
-    current_user.losses += 1 if params[:loss]
-    current_user.ties += 1 if params[:tie]
-    current_user.save
-  end
-
-  def invincible
-  end
-  
   def play
     cell = params[:cell]
     if session["cell_#{cell}"].present?
@@ -87,18 +73,17 @@ class PagesController < ApplicationController
   current_player
   redirect_to twoplayers_path
  end
+
   def twoplayers
-     
-  
   end
 
   def current_player
-   session[:current_player] = get_player_name(get_turn) 
+    session[:current_player] = get_player_name(get_turn) 
   end
 
- def get_player_name(player='x') 
+  def get_player_name(player='x') 
     session["player_#{player}_name"]
- end
+  end
   
   private
 
@@ -152,19 +137,18 @@ class PagesController < ApplicationController
 
   def is_vertical_win(column = 1, turn = 'x')
     column = column.to_i
-  newcell=1
-  get_cell(newcell) == turn &&
+    newcell = 1
+    get_cell(newcell) == turn &&
     get_cell(newcell + 3) == turn &&
     get_cell(newcell + 6) == turn ||   get_cell(newcell+1) == turn &&
     get_cell(newcell + 4) == turn &&
     get_cell(newcell + 7) == turn ||   get_cell(newcell+2) == turn &&
     get_cell(newcell + 5) == turn &&
     get_cell(newcell + 8) == turn 
-    
   end
   
   def is_horizontal_win(row = 1, turn = 'x')
-    cell=1
+    cell = 1
     if row == 1
       cell = 1
     elsif row == 2
@@ -173,17 +157,15 @@ class PagesController < ApplicationController
       cell = 7
     end
     get_cell(cell) == turn &&
-      get_cell(cell + 1) == turn &&
-      get_cell(cell + 2) == turn
+    get_cell(cell + 1) == turn &&
+    get_cell(cell + 2) == turn
   end
   
   def is_diagonal_win(turn = 'x')
     win = get_cell(1) == turn && get_cell(9) == turn
-
     unless win
       win = get_cell(3) == turn && get_cell(7) == turn
     end
-  
     win && get_cell(5) == turn
   end
 
@@ -193,11 +175,5 @@ class PagesController < ApplicationController
 
   def score(player = 'x')
     session["player_#{player}_wins"].presence || 0
-  end
-
-  def set_stats
-    @wins = current_user.win
-    @losses = current_user.losses
-    @ties = current_user.ties
   end
 end

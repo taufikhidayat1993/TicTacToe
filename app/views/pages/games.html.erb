@@ -1,32 +1,31 @@
 <div class="wrapper">
-<form id="newGameForm" action="/registerplayers" method="post">
-<div class="card">
-<div class="card-header">
-<h1>Start playing Tic Tac Toe!</h1>
-<h2>Please fill in your names</h2>
-<%= csrf_meta_tags %>
-</div>
-<div class="card-body">
-<% if flash[:error].present? %>
-  <div class="alert alert-danger">
-    <%= flash[:error] %>
-  </div>
-<% end %>
-<div class="welcome">
-<div class="player-name">
-  <label for="player1_name">Player <strong>(X)</strong> Name:</label>
-  <input type="text" name="player1_name" id="player1_name" value="<%= params[:player1_name] %>" required>
-</div>
-<div class="player-name">
-  <label for="player2_name">Player <Strong>(O)</strong> Name:</label>
-  <input type="text" name="player2_name" id="player2_name" value="<%= params[:player2_name] %>" required>
-  </div>
- 
-  </div>
-  </div>
-  <div class="card-footer">
-   <button type="submit">Start New Game</button>
-   </div>
-   </div>
-</form>
+  <form id="newGameForm" action="/registerplayers" method="post">
+    <div class="card">
+      <div class="card-header">
+        <h1>Start playing Tic Tac Toe!</h1>
+        <h2>Please fill in your names</h2>
+        <%= csrf_meta_tags %>
+      </div>
+      <div class="card-body">
+        <% if flash[:error].present? %>
+          <div class="alert alert-danger">
+            <%= flash[:error] %>
+          </div>
+        <% end %>
+        <div class="welcome">
+          <div class="player-name">
+            <label for="player1_name">Player <strong>(X)</strong> Name:</label>
+            <input type="text" name="player1_name" id="player1_name" value="<%= params[:player1_name] %>" required>
+          </div>
+          <div class="player-name">
+            <label for="player2_name">Player <Strong>(O)</strong> Name:</label>
+            <input type="text" name="player2_name" id="player2_name" value="<%= params[:player2_name] %>" required>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button type="submit">Start New Game</button>
+      </div>
+    </div>
+  </form>
 </div>

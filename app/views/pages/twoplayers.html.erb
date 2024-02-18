@@ -1,87 +1,61 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
-<!--<div class="container" style="text-align: center">
-  <h1 id="scoreText" style="text-align: center">
-    TicTacToe Two Player
-  </h1>
-  <div style="font-size: 32px; color:red;font-weight:bold;" id="result"></div>
-  <button class='custom-btn btn-5' onClick="newGame()" data-title="Replay Tic Tac Toe">Replay Tic Tac Toe</button>
-  <div style="font-size: 32px" id="turn_player"></div>
-  <button class='custom-btn btn-5' onClick="addSize()" data-title="Replay Tic Tac Toe">Add Rows/Cols (Max 15)</button>
-  <button class='custom-btn btn-5' onClick="subSize()" data-title="Replay Tic Tac Toe">Sub Rows/Cols (Min 2)</button>
-  <span style="font-size: 32px;" id="size"></span>
-</div>
--->
+
 <div class="wrapper">
-<form method="post" action="/play">
-<div class="card">
-  <div class="card-body">
-
-<h2>Welcome to the Game!</h2>
-<h2>
-<%= session[:current_player] %>'s turn</h2>
-<table class="tic-tac-toe" cellpadding="0" cellspacing="0">
-  <tbody>
-    <% last_row = 0 %>
-
-    <% (1..9).each do |i| %>
-      <% row = (i.to_f / 3).ceil %>
-
-      <% if row != last_row %>
-        <% last_row = row %>
-        <% if i > 1 %>
-          </tr>
-        <% end %>
-        <tr class="row-<%= row %>">
-      <% end %>
-
-      <% additional_class = '' %>
-
-      <% if [2, 8].include?(i) %>
-        <% additional_class = 'vertical-border' %>
-      <% elsif [4, 6].include?(i) %>
-        <% additional_class = 'horizontal-border' %>
-      <% elsif i == 5 %>
-        <% additional_class = 'center-border' %>
-      <% end %>
-
-      <td class="cell-<%= i %> <%= additional_class %>">
-        <% if session["cell_#{i}"] == 'x' %>
-          X
-        <% elsif session["cell_#{i}"] == 'o' %>
-          O
-        <% else %>
-         <%= session["cell_#{i}"] %>
-          <%= radio_button_tag 'cell', i, false, onclick: 'enableButton()' %>
-        <% end %>
-      </td>
-    <% end %>
-
-    </tr>
-  </tbody>
-</table>
- 
-
-
-</div>
-<div class="card-footer">
- <div class="row">
-    <div class="col text-start">
-        <%= link_to "End", games_path, class: "btn btn-primary btn-lg color-white" %>
+  <form method="post" action="/play">
+    <div class="card">
+      <div class="card-body">
+        <h2>Welcome to the Game!</h2>
+        <h2><%= session[:current_player] %>'s turn</h2>
+        <table class="tic-tac-toe" cellpadding="0" cellspacing="0">
+          <tbody>
+            <% last_row = 0 %>
+            <% (1..9).each do |i| %>
+              <% row = (i.to_f / 3).ceil %>
+              <% if row != last_row %>
+                <% last_row = row %>
+                <% if i > 1 %>
+                  </tr>
+                <% end %>
+                <tr class="row-<%= row %>">
+              <% end %>
+              <% additional_class = '' %>
+              <% if [2, 8].include?(i) %>
+                <% additional_class = 'vertical-border' %>
+              <% elsif [4, 6].include?(i) %>
+                <% additional_class = 'horizontal-border' %>
+              <% elsif i == 5 %>
+                <% additional_class = 'center-border' %>
+              <% end %>
+              <td class="cell-<%= i %> <%= additional_class %>">
+                <% if session["cell_#{i}"] == 'x' %>
+                  X
+                <% elsif session["cell_#{i}"] == 'o' %>
+                  O
+                <% else %>
+                  <%= session["cell_#{i}"] %>
+                  <%= radio_button_tag 'cell', i, false, onclick: 'enableButton()' %>
+                <% end %>
+              </td>
+            <% end %>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer">
+        <div class="row">
+          <div class="col text-start">
+            <%= link_to "End", games_path, class: "btn btn-primary btn-lg color-white" %>
+          </div>
+          <div class="col text-end">
+            <button type="submit" disabled id="play-btn">Play</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="col text-end">
-     <button type="submit" disabled id="play-btn">Play</button>
-    </div>
-   
-  </div>
-
-</div>
-</div>
-</form>
+  </form>
 </div>
 <script type="text/javascript">
-    function enableButton() {
-        document.getElementById('play-btn').disabled = false;
-    }
+  function enableButton() {
+    document.getElementById('play-btn').disabled = false;
+  }
 </script>
-
-
