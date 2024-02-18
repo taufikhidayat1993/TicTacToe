@@ -28,9 +28,9 @@
               <% end %>
               <td class="cell-<%= i %> <%= additional_class %>">
                 <% if session["cell_#{i}"] == 'x' %>
-                  X
+                  <strong>X<strong>
                 <% elsif session["cell_#{i}"] == 'o' %>
-                  O
+                  <strong>O</strong>
                 <% else %>
                   <%= session["cell_#{i}"] %>
                   <%= radio_button_tag 'cell', i, false, onclick: 'enableButton()' %>

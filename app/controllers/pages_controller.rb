@@ -67,10 +67,10 @@ class PagesController < ApplicationController
     redirect_to twoplayers_path
   end
   
- def play_again
+ def playagain
   set_turn('x')
   reset_board
-  current_player
+  session[:current_player] = get_player_name('x') 
   redirect_to twoplayers_path
  end
 
