@@ -45,9 +45,9 @@ Now go to http://localhost:3000/games
 
 #### Boards Play.
 
-![Image](ttps://solihulhadi.online/assets/play.JPG)
+![Image](https://solihulhadi.online/assets/play.JPG)
 
 #### Board's Score.
 
-![Image](ttps://solihulhadi.online/assets/hasil.JPG)
+![Image](https://solihulhadi.online/assets/hasil.JPG)
 
