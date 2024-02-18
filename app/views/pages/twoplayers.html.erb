@@ -12,9 +12,10 @@
 </div>
 -->
 <div class="wrapper">
+<form method="post" action="/play">
 <div class="card">
   <div class="card-body">
-<form method="post" action="/play">
+
 <h2>Welcome to the Game!</h2>
 <h2>
 <%= session[:current_player] %>'s turn</h2>
@@ -60,7 +61,7 @@
 </table>
  
 
-</form>
+
 </div>
 <div class="card-footer">
  <div class="row">
@@ -75,6 +76,7 @@
 
 </div>
 </div>
+</form>
 </div>
 <script type="text/javascript">
     function enableButton() {

@@ -64,7 +64,7 @@ button[disabled] {
 }
 
 .tic-tac-toe td {
-    border: 1px solid white;
+    border: 1px solid #eee;
     width: 100px;
     height: 100px;
 }

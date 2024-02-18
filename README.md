@@ -1,24 +1,53 @@
-# README
+# Welcome to Rails Tic-Tac-Toe Project Taufiq Hidayatullah
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is the tic tac toe game with two players
 
-Things you may want to cover:
 
-* Ruby version
+# 1. Technology
+- Ruby on Rails
 
-* System dependencies
+# 2. Configuration requirements
+We are going to build the web application using:
+- Rails 6.0.3.2
+- Ruby 3.0.6
 
-* Configuration
+# 3. Modes
 
-* Database creation
+- Two-player mode
 
-* Database initialization
+# 4. Runing
 
-* How to run the test suite
+### 4.1. Clone Repo
 
-* Services (job queues, cache servers, search engines, etc.)
+```
+$ git clone https://github.com/taufikhidayat1993/TicTacToe.git
+$ cd TicTacToe
+```
 
-* Deployment instructions
+### 4.2. Bundle Install 
 
-* ...
+```
+$ bundle install
+```
+### 4.3. Run server 
+
+```
+$ rails s
+```
+
+Now go to http://localhost:3000/games
+
+# 5. Images demo
+
+#### HomePage.
+
+![Image](https://solihulhadi.online/assets/home.JPG)
+
+#### Boards Play.
+
+![Image](ttps://solihulhadi.online/assets/play.JPG)
+
+#### Board's Score.
+
+![Image](ttps://solihulhadi.online/assets/hasil.JPG)
+
