@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
-  before_action :authenticate_user!, except: %i[home hiscores invincible twoplayers games play registerplayers result]
+  before_action :authenticate_user!, except: %i[home hiscores invincible twoplayers games play registerplayers result playagain]
   before_action :initialize_plays, only: [:play]
-  skip_before_action :verify_authenticity_token, only: [:twoplayers, :play, :registerplayers, :reset_board, :result]
+  skip_before_action :verify_authenticity_token, only: [:twoplayers, :play, :registerplayers, :reset_board, :result, :playagain]
 
   def initialize_plays
     session[:plays] ||= 0
@@ -33,14 +33,14 @@ class PagesController < ApplicationController
       render json: { success: false, message: '#{cell.inspect}' }
       return
     end
-
+   
     session["cell_#{cell}"] = get_turn
     add_plays_count
     win = player_play_win(cell)
   
     if !win
       switch_turn
-     
+      current_player
       redirect_to twoplayers_path
     else
       
@@ -56,19 +56,30 @@ class PagesController < ApplicationController
     set_turn('x')
     reset_board
     reset_wins
+    current_player
+    
     redirect_to twoplayers_path
   end
   
+ def play_again
+  set_turn('x')
+  reset_board
+  current_player
+  redirect_to twoplayers_path
+ end
   def twoplayers
-     session[:player_x_wins] = params[:player1_name]
-    session[:player_o_wins] = params[:player2_name]
+     
   
   end
 
   def current_player
-    session[:current_player] = get_player_name(get_turn)
+   session[:current_player] = get_player_name(get_turn) 
   end
 
+ def get_player_name(player='x') 
+    session["player_#{player}_name"]
+ end
+  
   private
 
   def reset_board
@@ -137,6 +148,7 @@ class PagesController < ApplicationController
   end
   
   def is_horizontal_win(row = 1, turn = 'x')
+  
     get_cell(row) == turn &&
       get_cell(row + 1) == turn &&
       get_cell(row + 2) == turn

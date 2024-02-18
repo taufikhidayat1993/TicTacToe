@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   post 'registerplayers', to: 'pages#registerplayers'
   post '/play', to: 'pages#play'
   get '/result', to: 'pages#result'
+  get '/playagain', to: 'pages#playagain'
 
 
     # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

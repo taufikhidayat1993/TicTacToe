@@ -1,27 +1,57 @@
-<table class="wrapper" cellpadding="0" cellspacing="0">
+<div class="container">
+<table class="wrapper table align-items-center" cellpadding="0" cellspacing="0">
   <tr>
     <td>
       <div class="welcome">
         <h1>
-          <% if params[:player].present? %>
-            <%= currentPlayer %> won!
+          <% if session[:current_player].present? %>
+            <%= session[:current_player] %> won!
           <% else %>
             It's a tie!
           <% end %>
         </h1>
 
-        <div class="player-name">
-          <%= session[:session_x_name] %>'s score: <b><%= @scorex %></b>
-        </div>
+       
 
-        <div class="player-name">
-          <%= session[:session_o_name] %>'s score: <b><%= @scoreo %></b>
-        </div>
-
-         <%= link_to "Play Again", twoplayers_path, class: "reset-btn" %>
-
-       <%= link_to "Reset", games_path, class: "reset-btn" %>
+       
       </div>
     </td>
   </tr>
+  <tr>
+  <td>
+  <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">No</th>
+      <th scope="col">Player Name</th>
+      <th scope="col">Input</th>
+      <th scope="col">Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td><%= session[:player_x_name] %></td>
+      <td><strong>X</strong></td>
+      <td><%=  session[:player_x_wins] %></td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td> <%= session[:player_o_name] %></td>
+      <td><strong>O</strong></td>
+      <td><%= session[:player_o_wins].present? ? session[:player_o_wins] : 0  %></td>
+    </tr>
+    </tbody>
+    </table>
+ 
+  </td>
+  </tr>
+  <tr>
+  <td>
+    <%= link_to "Play Again", twoplayers_path, class: "btn btn-primary btn-lg" %>
+
+       <%= link_to "Reset", games_path, class: "btn btn-secondary btn-lg" %>
+  </td>
+  </tr>
 </table>
+</div>
