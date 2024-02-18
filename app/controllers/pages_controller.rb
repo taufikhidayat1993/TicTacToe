@@ -37,7 +37,7 @@ class PagesController < ApplicationController
     session["cell_#{cell}"] = get_turn
     add_plays_count
     win = player_play_win(cell)
-  
+    
     if !win
       switch_turn
       current_player
@@ -114,14 +114,10 @@ class PagesController < ApplicationController
 
   def player_play_win(cell = 1)
     return false if session[:plays] < 3
-  
     column = cell % 3
     column = 3 if column.nil?
     row = (cell.to_f / 3.0).ceil
-  
     player = get_turn
-  
-  
     is_vertical_win(column, player) || is_horizontal_win(row, player) || is_diagonal_win(player)
   end
 
@@ -148,10 +144,17 @@ class PagesController < ApplicationController
   end
   
   def is_horizontal_win(row = 1, turn = 'x')
-  
-    get_cell(row) == turn &&
-      get_cell(row + 1) == turn &&
-      get_cell(row + 2) == turn
+    cell=1
+    if row == 1
+      cell = 1
+    elsif row == 2
+      cell = 4
+    elsif row == 3
+      cell = 7
+    end
+    get_cell(cell) == turn &&
+      get_cell(cell + 1) == turn &&
+      get_cell(cell + 2) == turn
   end
   
   def is_diagonal_win(turn = 'x')
